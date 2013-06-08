@@ -29,4 +29,11 @@
 //
 
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://naesb.org/espi", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@XmlJavaTypeAdapters({
+@XmlJavaTypeAdapter(UsagePointAdapter.class)
+})
+
 package org.energyos.espi.thirdparty.common;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
+

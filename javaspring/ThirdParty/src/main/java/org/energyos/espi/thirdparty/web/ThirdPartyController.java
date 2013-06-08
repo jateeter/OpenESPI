@@ -189,7 +189,7 @@ public class ThirdPartyController {
     	// TODO: put this in when we want to dynamically grab the URI
     	// DataCustodian aDataCustodian = DataCustodian.findDataCustodian(dcID);
     	Subscription theSubscription = new Subscription ();
-    	theSubscription.setSubscriptionParameters("http://localhost:9090/datacustodian/datacustodians/1/uploadmydata?url=" + aUrl);
+    	theSubscription.setSubscriptionParameters("http://localhost:8080/datacustodian/datacustodians/4/uploadmydata?url=" + aUrl);
 
         String xmlResult = "";
         theBatch.add(theSubscription);
@@ -249,7 +249,7 @@ public class ThirdPartyController {
             Writer w = null;
 
             try {
-                context = JAXBContext.newInstance("org.energyos.espi.thirdparty.atom:org.energyos.espi.thirdparty.common:org.energyos.espi.thirdparty.domain");
+                context = JAXBContext.newInstance("org.energyos.espi.thirdparty.atom:org.energyos.espi.thirdparty.common");
                 m = context.createMarshaller();
                 m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
                 w = new StringWriter();
