@@ -64,15 +64,17 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 @RooJpaActiveRecord
 
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "MeterReading")
 
 public class MeterReading extends IdentifiedObject {
 
     @OneToOne
-    @XmlElement
+   // @XmlElement
+    @XmlJavaTypeAdapter(UsagePointAdapter.class)
     private UsagePoint usagePoint;
 
     @OneToMany(cascade = CascadeType.ALL)
+    //@XmlElement
     private Set<IntervalBlock> intervalBlocks = new HashSet<IntervalBlock>();
 }

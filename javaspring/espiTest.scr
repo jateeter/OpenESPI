@@ -1,0 +1,9 @@
+curl -H "Accept=application/atom+xml" http://localhost:8080/datacustodian/datacustodians/4/insertDownloadMyDataFile?url=http://www.openespi.org/sampleData/nist/12MonthlyUpdates.xml
+curl -H "Accept=application/atom+xml" http://localhost:8080/thirdparty/thirdpartys/2/insertDownloadMyDataFile?url=http://www.openespi.org/sampleData/nist/12MonthlyUpdates.xml
+
+curl -H "Accept=application/atom+xml" http://localhost:8080/datacustodian/datacustodians/4/uploadmydata?url=http://www.openespi.org/sampleData/nist/12MonthlyUpdates.xml
+curl -H "Accept=application/atom+xml" http://localhost:8080/thirdparty/thirdpartys/2/uploadmydata?url=http://www.openespi.org/sampleData/nist/12MonthlyUpdates.xml
+
+curl -H "Accept=application/atom+xml" http://localhost:8080/thirdparty/thirdpartys/2/testdataflow?url=http://www.openespi.org/sampleData/nist/12MonthlyUpdates.xml
+curl -H "Accept=application/atom+xml" http://localhost:8080/thirdparty/thirdpartys/2/testdataflow?url=http://www.openespi.org/sampleData/nist/test.xml
+
