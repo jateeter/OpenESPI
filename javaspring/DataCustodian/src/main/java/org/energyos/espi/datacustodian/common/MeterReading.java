@@ -77,4 +77,20 @@ public class MeterReading extends IdentifiedObject {
     @OneToMany(cascade = CascadeType.ALL)
     //@XmlElement
     private Set<IntervalBlock> intervalBlocks = new HashSet<IntervalBlock>();
+    
+	public MeterReading() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public MeterReading (MeterReading obj) {
+    	new MeterReading();
+    	this.intervalBlocks = obj.intervalBlocks;
+    	this.usagePoint = obj.usagePoint;
+	}
+
+	public static MeterReading makePersistent (MeterReading obj) {
+		MeterReading result = new MeterReading(obj);
+        result.persist();
+		return result;    	    	
+    }
 }

@@ -59,12 +59,10 @@ import org.springframework.roo.addon.tostring.RooToString;
  * 
  * 
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "IntervalReading", propOrder = {
 	// TODO Fix cost element
     //    "cost",
-	"id",
-	"version",
     "readingCost",
     "readingQuality",
     "timePeriod",

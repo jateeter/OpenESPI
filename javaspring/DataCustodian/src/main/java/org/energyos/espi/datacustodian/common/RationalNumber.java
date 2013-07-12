@@ -26,6 +26,7 @@ package org.energyos.espi.datacustodian.common;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.springframework.roo.addon.javabean.RooJavaBean;
@@ -57,17 +58,31 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 @RooJpaActiveRecord
 
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "RationalNumber", propOrder = {
-		"id",
-		"version",
     "numerator",
     "denominator"
 })
 
 public class RationalNumber {
-
+    @XmlElement(name="numerator")
     private Long numerator;
-
+    @XmlElement(name="denominator")
     private Long denominator;
+    
+    public RationalNumber() {
+	// TODO Auto-generated constructor stub
+    }
+
+	public RationalNumber(RationalNumber obj) {
+		new RationalNumber();
+		this.numerator = obj.numerator;
+		this.denominator = obj.denominator;
+	}
+
+	public RationalNumber makePersistent(RationalNumber obj) {
+		RationalNumber result = new RationalNumber(obj);
+		result.persist();
+		return result;
+	}
 }

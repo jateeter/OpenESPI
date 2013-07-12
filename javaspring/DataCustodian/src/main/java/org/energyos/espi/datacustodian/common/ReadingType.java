@@ -98,7 +98,7 @@ public class ReadingType extends IdentifiedObject {
     private ReadingInterharmonic interharmonic;
 
     @ManyToOne
-    @XmlElement
+    @XmlJavaTypeAdapter(TimeAttributeAdapter.class)
     private TimeAttribute measuringPeriod;
 
     @ManyToOne
@@ -112,4 +112,36 @@ public class ReadingType extends IdentifiedObject {
     @ManyToOne
     @XmlElement
     private RationalNumber argument;
+
+
+	public static ReadingType CopyReadingType(ReadingType obj) {
+	    ReadingType result = new ReadingType();
+    	result.accumulationBehavior = obj.accumulationBehavior;
+    	result.aggregate = obj.aggregate;
+   	    result.argument = (obj.argument != null) ? obj.argument.makePersistent(obj.argument) : obj.argument;
+   	    /*
+    	result.commodity = obj.commodity;
+    	result.consumptionTier = obj.consumptionTier;
+    	result.cpp = obj.cpp;
+    	result.currency = obj.currency;
+    	result.dataQualifier = obj.dataQualifier;
+    	result.flowDirection = obj.flowDirection;
+    	result.interharmonic = (obj.interharmonic != null) ? ReadingInterharmonic.makePersistent(obj.interharmonic) : obj.interharmonic;
+    	result.intervalLength = obj.intervalLength;
+    	result.kind = obj.kind;
+    	result.measuringPeriod = obj.measuringPeriod;
+    	result.phase = obj.phase;
+    	result.powerOfTenMultiplier = obj.powerOfTenMultiplier;
+    	result.timeAttribute = obj.timeAttribute;
+    	result.tou = obj.tou;
+    	result.uom = obj.uom;
+    	*/
+   	    return result;
+	}
+
+	public static ReadingType makePersistent (ReadingType obj) {
+		ReadingType result = CopyReadingType(obj);
+		result.persist();
+        return result;
+	}
 }

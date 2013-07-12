@@ -69,17 +69,16 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 @RooJpaActiveRecord
 
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "IntervalBlock", propOrder = {
-    "espiinterval",
-    "intervalReading",
-    "readingType"
-})
+	    "espiinterval",
+	    "intervalReading"
+	})
 
 public class IntervalBlock extends IdentifiedObject {
 
     @ManyToOne
-    @XmlElement(name = "espiinterval")
+    @XmlElement(name = "interval")
     private DateTimeInterval espiinterval;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -87,10 +86,8 @@ public class IntervalBlock extends IdentifiedObject {
     private Set<IntervalReading> intervalReading = new HashSet<IntervalReading>();
 
     @ManyToOne
-    @XmlTransient
     private MeterReading meterReading;
 
     @ManyToOne
-    @XmlElement(name = "readingType")
     private ReadingType readingType;
 }

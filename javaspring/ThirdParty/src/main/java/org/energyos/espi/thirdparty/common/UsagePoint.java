@@ -79,7 +79,8 @@ import org.springframework.roo.addon.tostring.RooToString;
 
 public class UsagePoint extends IdentifiedObject {
 
-    @XmlElement(type = String.class)
+	@XmlElement(type=java.lang.Short.class)
+	//@XmlElement(type = String.class)
     //@XmlJavaTypeAdapter(HexBinaryAdapter.class)
     private Short roleFlags;
 

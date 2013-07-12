@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 EnergyOS.Org
+7 * Copyright (c) 2011, 2012 EnergyOS.Org
  *
  * Licensed by EnergyOS.Org under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
@@ -81,7 +81,8 @@ import org.springframework.roo.addon.tostring.RooToString;
 
 public class UsagePoint extends IdentifiedObject {
 
-    @XmlElement(type = String.class)
+	@XmlElement(type=java.lang.Short.class)
+    //@XmlElement(type = String.class)
     //@XmlJavaTypeAdapter(HexBinaryAdapter.class)
     private Short roleFlags;
 

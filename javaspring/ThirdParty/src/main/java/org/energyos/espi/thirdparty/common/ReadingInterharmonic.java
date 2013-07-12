@@ -26,6 +26,7 @@ package org.energyos.espi.thirdparty.common;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.springframework.roo.addon.javabean.RooJavaBean;
@@ -58,17 +59,15 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 @RooJpaActiveRecord
 
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "ReadingInterharmonic", propOrder = {
-    "id",
-	"version",
     "numerator",
     "denominator"
 })
 
 public class ReadingInterharmonic {
-
+    @XmlElement(name="numerator")
     private Long numerator;
-
+    @XmlElement(name="denominator")
     private Long denominator;
 }

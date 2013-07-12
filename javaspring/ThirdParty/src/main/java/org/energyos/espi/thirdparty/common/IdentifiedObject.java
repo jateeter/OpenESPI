@@ -30,6 +30,7 @@ import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
@@ -77,9 +78,8 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 @RooJpaActiveRecord
 
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "IdentifiedObject", propOrder = {
-    "id", "version",
     "uuid",
     // "mrid",
     "description"
@@ -99,7 +99,9 @@ import org.springframework.roo.addon.tostring.RooToString;
 
 public class IdentifiedObject {
     @XmlID
+    @XmlElement(name="uuid")
     private String uuid;
+    @XmlElement(name="description")
     private String description;
    
     public IdentifiedObject () {

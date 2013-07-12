@@ -77,11 +77,11 @@ import org.springframework.roo.addon.tostring.RooToString;
 public class IntervalBlock extends IdentifiedObject {
 
     @ManyToOne
-    @XmlElement(name = "espiinterval")
+    @XmlElement(name = "interval")
     private DateTimeInterval espiinterval;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @XmlElement(name = "intervalReading")
+    @XmlElement(name = "IntervalReading")
     private Set<IntervalReading> intervalReading = new HashSet<IntervalReading>();
 
     @ManyToOne

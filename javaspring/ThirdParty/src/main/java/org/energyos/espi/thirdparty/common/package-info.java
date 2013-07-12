@@ -30,10 +30,38 @@
 
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://naesb.org/espi", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
 @XmlJavaTypeAdapters({
-@XmlJavaTypeAdapter(UsagePointAdapter.class)
+	
+@XmlJavaTypeAdapter(type=AccumulationBehavior.class, value=AccumulationBehaviorAdapter.class),
+@XmlJavaTypeAdapter(type=AuthorizationStatus.class, value=AuthorizationStatusAdapter.class),
+@XmlJavaTypeAdapter(type=CPP.class, value=CPPAdapter.class),
+@XmlJavaTypeAdapter(type=CRUDOperation.class, value=CRUDOperationAdapter.class),
+@XmlJavaTypeAdapter(type=Commodity.class, value=CommodityAdapter.class),
+@XmlJavaTypeAdapter(type=ConsumptionTier.class, value=ConsumptionTierAdapter.class),
+@XmlJavaTypeAdapter(type=Currency.class, value=CurrencyAdapter.class),
+@XmlJavaTypeAdapter(type=DataCustodianApplicationStatus.class, value=DataCustodianApplicationStatusAdapter.class),
+@XmlJavaTypeAdapter(type=DataCustodianType.class, value=DataCustodianTypeAdapter.class),
+@XmlJavaTypeAdapter(type=DataQualifier.class, value=DataQualifierAdapter.class),
+@XmlJavaTypeAdapter(type=DirectionOfFlow.class, value=DirectionOfFlowAdapter.class),
+@XmlJavaTypeAdapter(type=Kind.class, value=KindAdapter.class),
+@XmlJavaTypeAdapter(type=PhaseCode.class, value=PhaseCodeAdapter.class),
+@XmlJavaTypeAdapter(type=QualityOfReading.class, value=QualityOfReadingAdapter.class),
+@XmlJavaTypeAdapter(type=ServiceKind.class, value=ServiceKindAdapter.class),
+@XmlJavaTypeAdapter(type=ServiceStatus.class, value=ServiceStatusAdapter.class),
+@XmlJavaTypeAdapter(type=StatusCode.class, value=StatusCodeAdapter.class),
+@XmlJavaTypeAdapter(type=ThirdPartyApplicationStatus.class, value=ThirdPartyApplicationStatusAdapter.class),
+@XmlJavaTypeAdapter(type=ThirdPartyApplicationType.class, value=ThirdPartyApplicationTypeAdapter.class),
+@XmlJavaTypeAdapter(type=ThirdPartyApplicationUse.class, value=ThirdPartyApplicationUseAdapter.class),
+@XmlJavaTypeAdapter(type=TimeAttribute.class, value=TimeAttributeAdapter.class),
+@XmlJavaTypeAdapter(type=TimePeriodOfInterest.class, value=TimePeriodOfInterestAdapter.class),
+@XmlJavaTypeAdapter(type=TOU.class, value=TOUAdapter.class),
+@XmlJavaTypeAdapter(type=UnitMultiplier.class, value=UnitMultiplierAdapter.class),
+@XmlJavaTypeAdapter(type=UnitSymbol.class, value=UnitSymbolAdapter.class),
+@XmlJavaTypeAdapter(type=UsagePoint.class, value = UsagePointAdapter.class)
+
 })
 
 package org.energyos.espi.thirdparty.common;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters;
+
 

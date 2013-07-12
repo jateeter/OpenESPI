@@ -31,6 +31,10 @@ import java.io.Writer;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -38,13 +42,23 @@ import javax.validation.Valid;
 import org.energyos.espi.datacustodian.common.ApplicationInformation;
 import org.energyos.espi.datacustodian.common.DataCustodianApplicationStatus;
 import org.energyos.espi.datacustodian.common.DataCustodianType;
+import org.energyos.espi.datacustodian.common.ElectricPowerUsageSummary;
 import org.energyos.espi.datacustodian.common.IdentifiedObject;
+import org.energyos.espi.datacustodian.common.IntervalBlock;
+import org.energyos.espi.datacustodian.common.IntervalReading;
+import org.energyos.espi.datacustodian.common.MeterReading;
+import org.energyos.espi.datacustodian.common.ReadingType;
+import org.energyos.espi.datacustodian.common.ServiceCategory;
 import org.energyos.espi.datacustodian.common.ServiceStatus;
+import org.energyos.espi.datacustodian.common.TimeConfiguration;
+import org.energyos.espi.datacustodian.common.UUIDType;
+import org.energyos.espi.datacustodian.common.UsagePoint;
 import org.energyos.espi.datacustodian.domain.DataCustodian;
 import org.energyos.espi.datacustodian.domain.RetailCustomer;
 import org.energyos.espi.datacustodian.domain.ThirdParty;
 
 import org.energyos.espi.datacustodian.atom.*;
+import org.energyos.espi.datacustodian.atom.Object;
 
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
@@ -64,6 +78,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
+
+import com.sun.tools.javac.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -85,7 +101,8 @@ import javax.xml.bind.Marshaller;
 @RooWebScaffold(path = "datacustodians", formBackingObject = DataCustodian.class)
 public class DataCustodianController {
                                                                                                                                                                                                                                                
-	   @RequestMapping(method = RequestMethod.GET, value="/{id}/insertDownloadMyDataFile", params={"url"}, headers="Accept=application/atom+xml")
+	   @SuppressWarnings("rawtypes")
+	@RequestMapping(method = RequestMethod.GET, value="/{id}/insertDownloadMyDataFile", params={"url"}, headers="Accept=application/atom+xml")
 	    @ResponseBody
 	    public String insertDownloadMyDataFile(@PathVariable("id") Long id, @RequestParam("url") String aUrl) {
 		   // TODO: change return from String to HttpResponseEntity with proper content
@@ -97,6 +114,13 @@ public class DataCustodianController {
 	        Marshaller m;
 	        Writer w = null;
 	        JAXBContext jc;
+	        
+	        MeterReading meterReading = null;
+	        TimeConfiguration timeConfiguration;
+	        HashSet <IntervalBlock> intervalBlocks = new HashSet <IntervalBlock> ();
+	        ReadingType readingType = null;
+	        ElectricPowerUsageSummary electricPowerUsageSummary;
+	        UsagePoint usagePoint = null;
 			
 	        DataCustodian resource = DataCustodian.findDataCustodian(id);
 	      
@@ -114,7 +138,108 @@ public class DataCustodianController {
 							unmarshaller = jc.createUnmarshaller();
 				    		try {
 				    			theFeed = (FeedType) JAXBIntrospector.getValue(unmarshaller.unmarshal(aFeed));				    	 
-		                    } catch (JAXBException e1) {
+				    	        // now instantiate the feed
+				    	        // TODO: this is should be happening incrementally during the parse
+				    	        
+				    			java.util.List<java.lang.Object> theList = theFeed.getAuthorOrCategoryOrContributor();
+				    	        Iterator it = theList.iterator();
+				    	        while (it.hasNext()) {
+				    	        	JAXBElement aThing = (JAXBElement) it.next();
+				    	            System.out.println(aThing.toString() + aThing.getDeclaredType().toString());
+				    	            if (aThing.getDeclaredType().equals(org.energyos.espi.datacustodian.atom.EntryType.class)) {
+					    	            EntryType theValue = (EntryType) aThing.getValue();
+					    	            java.util.List<java.lang.Object> theContent = theValue.getAuthorOrCategoryOrContent();
+					    	            Iterator values = theContent.iterator();
+					    	            while (values.hasNext()) {
+					    	            	JAXBElement aValue = (JAXBElement) values.next();
+						    	            System.out.println(".." + aValue.toString() + aValue.getDeclaredType().toString());
+						    	            if (aValue.getDeclaredType().equals(org.energyos.espi.datacustodian.atom.ContentType.class)) {
+							    	            System.out.println("..." + aValue.toString() + aValue.getDeclaredType().toString());
+							    	            ContentType temp = (ContentType) aValue.getValue();
+							    	            java.util.List<java.lang.Object> foo = temp.getContent();
+							    	            Iterator<java.lang.Object> fooValues = foo.iterator();
+							    	            while (fooValues.hasNext()) {
+							    	            	java.lang.Object aFooValue = fooValues.next();
+							    	            	if (aFooValue.getClass().equals(JAXBElement.class)) {
+							    	            		JAXBElement temp2 = (JAXBElement) aFooValue;
+							    	   
+							    	            		if (temp2.getDeclaredType().getPackage().equals(Package.getPackage("org.energyos.espi.datacustodian.common"))) {                                        
+							    	            			System.out.println("...." + temp2.toString() + ":" + temp2.getDeclaredType().toString());
+							    	            			if (temp2.getDeclaredType().equals(MeterReading.class)) {
+							    	            				meterReading = (MeterReading) temp2.getValue();
+							    	            			}
+							    	            			if (temp2.getDeclaredType().equals(UsagePoint.class)) {
+							    	            				usagePoint = (UsagePoint) temp2.getValue();
+							    	            			}
+							    	            			if (temp2.getDeclaredType().equals(TimeConfiguration.class)) {
+							    	            				timeConfiguration = (TimeConfiguration) temp2.getValue();
+							    	            			}
+							    	            			if (temp2.getDeclaredType().equals(IntervalBlock.class)) {
+							    	            				intervalBlocks.add((IntervalBlock) temp2.getValue());
+							    	            			}
+							    	            			if (temp2.getDeclaredType().equals(ReadingType.class)) {
+							    	            				readingType = (ReadingType) temp2.getValue();
+							    	            			}
+							    	            			if (temp2.getDeclaredType().equals(ElectricPowerUsageSummary.class)) {
+							    	            				electricPowerUsageSummary = (ElectricPowerUsageSummary) temp2.getValue();
+							    	            			}
+							    	            		}
+							    	            	}
+							    	            	fooValues.remove();
+							    	            }
+						    	            }
+							    	        values.remove();	
+					    	            
+					    	            }
+					    	            }
+				    	            
+				    	            it.remove(); // avoids a ConcurrentModificationException	        	
+				    	        }
+				    	        //TODO now hook things together
+    	            			//TODO Link to the Retail Customer through the Access Token
+    	            			//TODO Add in Location and Address based on Retail Customer
+    	            			//TODO Make the enums not persist new values, rather through an error if something unexpected comes in	
+				    	        
+				    	        //TODO check to see if we already have this usagePoint (based upon UUID)
+				    	        UsagePoint realUsagePoint = new UsagePoint();
+				    	        realUsagePoint.setDataCustodian(resource);
+				    	        ServiceCategory serviceCategory = new ServiceCategory();
+				    	        serviceCategory.setKind(usagePoint.getServiceCategory().getKind());
+				    	        serviceCategory.persist();
+				    	        realUsagePoint.setServiceCategory(serviceCategory);
+				    	        realUsagePoint.setUuid(usagePoint.getUuid());
+				    	        realUsagePoint.persist();
+				    	        
+				    	        //TODO check to see if we already have this meterReading (based upon UUID)
+				    	        MeterReading realMeterReading = new MeterReading();
+				    	        realMeterReading.setUsagePoint(realUsagePoint);
+				    	        realMeterReading.setUuid(meterReading.getUuid());
+				    	        realMeterReading.persist();
+				    	        
+				    	        realMeterReading.setIntervalBlocks(intervalBlocks);
+                                ReadingType realReadingType = ReadingType.makePersistent(readingType);
+				    	        //First Persist the Interval Readings and Interval Blocks
+				    	        Iterator ibIterator = intervalBlocks.iterator();
+				    	        while (ibIterator.hasNext()) {
+				    	        	IntervalBlock ib = (IntervalBlock) ibIterator.next();
+				    	            ib.setMeterReading(meterReading);
+				    	         	ib.setReadingType(readingType);
+					    	        ib.persist();
+				    	         	Iterator iIterator = ib.getIntervalReading().iterator();
+				    	         	while (iIterator.hasNext()) {
+				    	         		IntervalReading ir = (IntervalReading) iIterator.next();
+				    	         		ir.setUsagePoint(usagePoint);
+				    	         		ir.setIntervalBlock(ib);
+				    	         	    ir.persist();
+				    	         		iIterator.remove();
+				    	         }	
+				    	         ibIterator.remove();
+				    	        }
+
+				    	        
+				    	        
+				    	        
+				    		} catch (JAXBException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
@@ -131,6 +256,7 @@ public class DataCustodianController {
 					e1.printStackTrace();
 	    		}
 	        }
+            
 	        return "200 - Ok";
 	    }
 		 

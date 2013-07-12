@@ -96,6 +96,7 @@ public class EntryType {
     @XmlAnyAttribute
     private Map<QName, String> otherAttributes = new HashMap<QName, String>();
 
+
     /**
      * Gets the value of the authorOrCategoryOrContent property.
      * 

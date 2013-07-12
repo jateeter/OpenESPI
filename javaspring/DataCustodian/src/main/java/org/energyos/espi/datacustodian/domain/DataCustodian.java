@@ -61,8 +61,6 @@ import org.energyos.espi.datacustodian.common.IdentifiedObject;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DataCustodian", propOrder = {
-		"id",
-		"version",
     "mRID",
     "name",
     "description",
